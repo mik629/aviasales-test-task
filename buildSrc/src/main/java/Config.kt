@@ -4,7 +4,7 @@ object Config {
     const val androidMinSdk = 24
     const val androidTargetSdk = 30
     const val androidCompileSdk = 30
-    const val applicationId = "com.github.mik629.android.fundamentals"
+    const val applicationId = "com.github.mik629.android.aviasales_test_task"
     const val versionCode = 1
     const val versionName = "1.0"
 }
