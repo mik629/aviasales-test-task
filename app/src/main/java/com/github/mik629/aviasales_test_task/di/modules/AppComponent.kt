@@ -2,6 +2,8 @@ package com.github.mik629.aviasales_test_task.di.modules
 
 import android.app.Application
 import com.github.mik629.aviasales_test_task.App
+import com.github.mik629.aviasales_test_task.presentation.ui.AppActivity
+import com.github.mik629.aviasales_test_task.presentation.ui.destinations.ChooseDestinationsFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -13,13 +15,15 @@ interface AppComponent {
 
     fun inject(app: App)
 
-//    fun inject(fragment: FragmentMoviesList)
+    fun inject(activity: AppActivity)
+
+    fun inject(fragment: ChooseDestinationsFragment)
 
     @Component.Factory
     interface Factory {
         fun create(
-            @BindsInstance
-            application: Application
+                @BindsInstance
+                application: Application
         ): AppComponent
     }
 }
