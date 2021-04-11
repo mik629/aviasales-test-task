@@ -6,8 +6,8 @@ import retrofit2.http.Query
 
 interface ServerApi {
     @GET("autocomplete")
-    suspend fun getMovie(
-        @Query("term") airportAbbreviation: String,
-        @Query("lang") languageCode: String
+    suspend fun autocomplete(
+        @Query("term") airportAbbreviation: String = "mow",
+        @Query("lang") languageCode: String = "ru"
     ): AutocompleteResponse
 }
