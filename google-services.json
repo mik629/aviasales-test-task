@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "720050127796",
+    "project_id": "aviasales-test-task-5084c",
+    "storage_bucket": "aviasales-test-task-5084c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:720050127796:android:8c9dc8fd244a68e8b528e1",
+        "android_client_info": {
+          "package_name": "com.github.mik629.android.aviasales_test_task"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "720050127796-liaun9lrsi85vn5ol6c1fh862hihdgng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUO_D04_G_J53GNyP0g7NhUqPGILlkol4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "720050127796-liaun9lrsi85vn5ol6c1fh862hihdgng.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

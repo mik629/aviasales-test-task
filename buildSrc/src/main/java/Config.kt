@@ -37,6 +37,8 @@ object Versions {
     const val viewBindingProperty = "1.4.4"
     const val dagger = "2.33"
     const val cicerone = "6.6"
+    const val playServicesMaps = "17.0.0"
+    const val mapsUtils = "0.5"
 
     // Libs for testing
     const val junit = "5.7.0"
@@ -88,6 +90,10 @@ object Libs {
     const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
     const val daggerProcessor = "com.google.dagger:dagger-compiler:${Versions.dagger}"
     const val cicerone = "com.github.terrakok:cicerone:${Versions.cicerone}"
+
+    const val playServicesMaps =
+        "com.google.android.gms:play-services-maps:${Versions.playServicesMaps}"
+    const val mapsUtils = "com.google.maps.android:android-maps-utils:${Versions.mapsUtils}"
 
     // Test libraries
     const val junit = "org.junit.jupiter:junit-jupiter-api:${Versions.junit}"

@@ -79,6 +79,8 @@ dependencies {
     implementation(Libs.dagger)
     kapt(Libs.daggerProcessor)
     implementation(Libs.cicerone)
+    implementation(Libs.playServicesMaps)
+    implementation(Libs.mapsUtils)
 
     testImplementation(Libs.junit)
     testImplementation(Libs.junitEngine)
