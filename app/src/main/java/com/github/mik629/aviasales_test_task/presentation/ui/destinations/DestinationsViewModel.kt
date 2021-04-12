@@ -19,7 +19,7 @@ class DestinationsViewModel(
     private val router: Router
 ) : ViewModel() {
     private val _destinations: MutableLiveData<ViewState<List<City>, Throwable>> = MutableLiveData()
-    private val destinations: LiveData<ViewState<List<City>, Throwable>>
+    val destinations: LiveData<ViewState<List<City>, Throwable>>
         get() =
             _destinations
 
@@ -29,10 +29,10 @@ class DestinationsViewModel(
             runCatching {
                 destinationsRepository.getCities()
             }.onSuccess { cities ->
-                ViewState.success(data = cities)
+                _destinations.value = ViewState.success(data = cities)
             }.onFailure { e ->
                 Timber.e(e)
-                ViewState.error(error = e)
+                _destinations.value = ViewState.error(error = e)
             }
         }
     }

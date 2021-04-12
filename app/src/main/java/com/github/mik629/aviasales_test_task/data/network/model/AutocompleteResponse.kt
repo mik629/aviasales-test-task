@@ -13,7 +13,7 @@ class AutocompleteResponse(
 @JsonClass(generateAdapter = true)
 class CityDto(
     val id: Long,
-    val fullName: String,
+    val fullName: String?,
     val location: LocationDto,
     @Json(name = "city")
     val name: String

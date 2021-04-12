@@ -4,4 +4,6 @@
     <string name="search_button_text">Search</string>
 
     <string name="map_api_key">AIzaSyA25X4egRvUBLCMoBS1HrNYTnfYktap1tM</string>
+    <string name="departure_hint">From</string>
+    <string name="destination_hint">To</string>
 </resources>
