@@ -20,7 +20,8 @@
 
         <activity
             android:name="com.github.mik629.aviasales_test_task.presentation.ui.AppActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

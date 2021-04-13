@@ -10,6 +10,7 @@ import javax.inject.Inject
 class DestinationsRepositoryImpl @Inject constructor(
     private val serverApi: ServerApi
 ) : DestinationsRepository {
+    // todo mb add sparsearray cache and inject city ids into VM
 
     override suspend fun getCities(): List<City> =
         serverApi.autocomplete()

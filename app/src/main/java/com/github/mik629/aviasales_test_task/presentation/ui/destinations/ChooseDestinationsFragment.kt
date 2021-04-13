@@ -37,16 +37,22 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
         viewModel.destinations.observe(viewLifecycleOwner) { viewState ->
             when (viewState) {
                 is ViewState.Success -> {
-                    binding.departure.setAdapter(
+                    binding.departurePoint.setAdapter(
                         createAutoCompleteAdapter(cities = viewState.result)
                     )
-                    binding.destination.setAdapter(
+                    binding.arrivalPoint.setAdapter(
                         createAutoCompleteAdapter(cities = viewState.result)
                     )
                 }
             }
         }
-        binding.destination.setOnEditorActionListener { _, id, _ ->
+        binding.departurePoint.setOnItemClickListener { _, _, position, _ ->
+            viewModel.saveDepartureChoice(position)
+        }
+        binding.arrivalPoint.setOnItemClickListener { _, _, position, _ ->
+            viewModel.saveArrivalChoice(position)
+        }
+        binding.arrivalPoint.setOnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
                 viewModel.onSearchClick()
                 true
@@ -59,9 +65,7 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
             requireContext(),
             android.R.layout.simple_dropdown_item_1line,
             cities.map { city -> city.name }
-        ).also { adapter ->
-            adapter.setNotifyOnChange(true)
-        }
+        )
 
     companion object {
         @JvmStatic

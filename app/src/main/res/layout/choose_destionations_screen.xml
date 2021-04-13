@@ -23,7 +23,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
-            android:id="@+id/departure"
+            android:id="@+id/departure_point"
             style="@style/InputFieldLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
-            android:id="@+id/destination"
+            android:id="@+id/arrival_point"
             style="@style/InputFieldLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
