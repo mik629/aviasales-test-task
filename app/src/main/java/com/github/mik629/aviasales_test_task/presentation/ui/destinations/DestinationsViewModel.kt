@@ -44,7 +44,10 @@ class DestinationsViewModel(
 
     fun onSearchClick() {
         router.navigateTo(
-            Screens.mapFragment(departurePoint = departurePoint!!, arrivalPoint = arrivalPoint!!)
+            Screens.mapFragment(
+                departureCityId = departurePoint!!.id,
+                arrivalCityId = arrivalPoint!!.id
+            )
         )
     }
 
