@@ -1,7 +1,12 @@
 package com.github.mik629.aviasales_test_task.presentation.ui.map
 
+import android.animation.ObjectAnimator
+import android.animation.TypeEvaluator
 import android.os.Bundle
+import android.util.Property
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.github.mik629.aviasales_test_task.R
@@ -10,9 +15,14 @@ import com.github.mik629.aviasales_test_task.domain.models.City
 import com.github.mik629.aviasales_test_task.presentation.ui.ViewState
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
+import com.google.maps.android.SphericalUtil
 import javax.inject.Inject
+
 
 class MapFragment : Fragment(R.layout.map_screen) {
     @Inject
@@ -37,19 +47,38 @@ class MapFragment : Fragment(R.layout.map_screen) {
         (childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).getMapAsync { map ->
             viewModel.destinations.observe(viewLifecycleOwner) { viewState ->
                 when (viewState) {
-                    is ViewState.Success -> addMarkers(
-                        map = map,
-                        departureCity = viewState.result.first,
-                        arrivalCity = viewState.result.second
-                    )
+                    is ViewState.Success -> with(viewState.result) {
+                        addMarkers(
+                            map = map,
+                            departureCity = first,
+                            arrivalCity = second
+                        )
+                    }
                 }
             }
         }
     }
 
     private fun addMarkers(map: GoogleMap, departureCity: City, arrivalCity: City) {
+        val departurePoint = LatLng(departureCity.location.lat, departureCity.location.lon)
+        val arrivalPoint = LatLng(arrivalCity.location.lat, arrivalCity.location.lon)
         map.addMarker(buildMarker(city = departureCity))
         map.addMarker(buildMarker(city = arrivalCity))
+        map.addPolyline(
+            PolylineOptions()
+                .add(departurePoint, arrivalPoint)
+                .width(8f)
+                .color(ContextCompat.getColor(requireContext(), R.color.light_blue))
+                .geodesic(true)
+        )
+        animateMarker(
+            marker = map.addMarker(
+                MarkerOptions()
+                    .position(departurePoint)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_plane))
+            ),
+            finalPosition = arrivalPoint
+        )
     }
 
     private fun buildMarker(city: City): MarkerOptions =
@@ -62,8 +91,17 @@ class MapFragment : Fragment(R.layout.map_screen) {
             ).title(city.name)
 
 
-    private fun animateMarker(map: GoogleMap) {
-
+    private fun animateMarker(marker: Marker, finalPosition: LatLng) {
+        val typeEvaluator = TypeEvaluator<LatLng> { fraction, startValue, endValue ->
+            SphericalUtil.interpolate(startValue, endValue, fraction.toDouble())
+        }
+        val property: Property<Marker, LatLng> = Property.of(
+            Marker::class.java,
+            LatLng::class.java, "position"
+        )
+        val animator = ObjectAnimator.ofObject(marker, property, typeEvaluator, finalPosition)
+        animator.duration = 3000
+        animator.start()
     }
 
     companion object {
@@ -71,13 +109,12 @@ class MapFragment : Fragment(R.layout.map_screen) {
         private const val ARG_ARRIVAL_CITY_ID = "arrivalCityId"
 
         @JvmStatic
-        fun newInstance(departureCityId: Long, arrivalCityId: Long): Fragment {
-            val fragment = MapFragment()
-            val args = Bundle()
-            args.putLong(ARG_DEPARTURE_CITY_ID, departureCityId)
-            args.putLong(ARG_ARRIVAL_CITY_ID, arrivalCityId)
-            fragment.arguments = args
-            return fragment
-        }
+        fun newInstance(departureCityId: Long, arrivalCityId: Long): Fragment =
+            MapFragment().apply {
+                arguments = bundleOf(
+                    ARG_DEPARTURE_CITY_ID to departureCityId,
+                    ARG_ARRIVAL_CITY_ID to arrivalCityId
+                )
+            }
     }
 }
