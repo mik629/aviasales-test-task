@@ -23,10 +23,6 @@ class DestinationsViewModel(
         get() =
             _destinations
 
-    private var departurePoint: City? = null
-    private var arrivalPoint: City? = null
-    private var destinationsCache: List<City> = emptyList()
-
     init {
         viewModelScope.launch {
             _destinations.value = ViewState.loading()
@@ -34,7 +30,6 @@ class DestinationsViewModel(
                 destinationsRepository.getCities()
             }.onSuccess { cities ->
                 _destinations.value = ViewState.success(data = cities)
-                destinationsCache = cities
             }.onFailure { e ->
                 Timber.e(e)
                 _destinations.value = ViewState.error(error = e)
@@ -44,19 +39,20 @@ class DestinationsViewModel(
 
     fun onSearchClick() {
         router.navigateTo(
-            Screens.mapFragment(
-                departureCityId = departurePoint!!.id,
-                arrivalCityId = arrivalPoint!!.id
-            )
+            Screens.mapFragment()
         )
     }
 
-    fun saveDepartureChoice(position: Int) {
-        departurePoint = destinationsCache[position]
+    fun saveDepartureChoice(departureCity: City) {
+        viewModelScope.launch {
+            destinationsRepository.storeDepartureCity(city = departureCity)
+        }
     }
 
-    fun saveArrivalChoice(position: Int) {
-        arrivalPoint = destinationsCache[position]
+    fun saveArrivalChoice(arrivalCity: City) {
+        viewModelScope.launch {
+            destinationsRepository.storeArrivalCity(city = arrivalCity)
+        }
     }
 
     class Factory @Inject constructor(

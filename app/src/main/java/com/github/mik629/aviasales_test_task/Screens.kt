@@ -8,11 +8,8 @@ object Screens {
     fun destinationsFragment(): FragmentScreen =
         FragmentScreen { ChooseDestinationsFragment.newInstance() }
 
-    fun mapFragment(departureCityId: Long, arrivalCityId: Long): FragmentScreen =
+    fun mapFragment(): FragmentScreen =
         FragmentScreen {
-            MapFragment.newInstance(
-                departureCityId = departureCityId,
-                arrivalCityId = arrivalCityId
-            )
+            MapFragment.newInstance()
         }
 }

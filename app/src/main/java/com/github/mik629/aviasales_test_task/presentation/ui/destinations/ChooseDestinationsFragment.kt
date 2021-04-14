@@ -3,7 +3,6 @@ package com.github.mik629.aviasales_test_task.presentation.ui.destinations
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -46,11 +45,11 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
                 }
             }
         }
-        binding.departurePoint.setOnItemClickListener { _, _, position, _ ->
-            viewModel.saveDepartureChoice(position)
+        binding.departurePoint.setOnItemClickListener { parent, _, position, _ ->
+            viewModel.saveDepartureChoice(parent.getItemAtPosition(position) as City)
         }
-        binding.arrivalPoint.setOnItemClickListener { _, _, position, _ ->
-            viewModel.saveArrivalChoice(position)
+        binding.arrivalPoint.setOnItemClickListener { parent, _, position, _ ->
+            viewModel.saveArrivalChoice(parent.getItemAtPosition(position) as City)
         }
         binding.arrivalPoint.setOnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
@@ -61,10 +60,9 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
     }
 
     private fun createAutoCompleteAdapter(cities: List<City>) =
-        ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            cities.map { city -> city.name }
+        CityArrayAdapter(
+            context = requireContext(),
+            items = ArrayList(cities)
         )
 
     companion object {

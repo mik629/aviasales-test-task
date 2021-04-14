@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Property
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.github.mik629.aviasales_test_task.R
@@ -26,15 +25,10 @@ import javax.inject.Inject
 
 class MapFragment : Fragment(R.layout.map_screen) {
     @Inject
-    lateinit var mapViewModelFactory: MapViewModelFactory.Factory
+    lateinit var mapViewModelFactory: MapViewModel.Factory
 
     private val viewModel: MapViewModel by viewModels(
-        factoryProducer = {
-            mapViewModelFactory.create(
-                departureCityId = arguments?.getLong(ARG_DEPARTURE_CITY_ID) ?: -1,
-                arrivalCityId = arguments?.getLong(ARG_ARRIVAL_CITY_ID) ?: -1,
-            )
-        }
+        factoryProducer = { mapViewModelFactory }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,16 +99,8 @@ class MapFragment : Fragment(R.layout.map_screen) {
     }
 
     companion object {
-        private const val ARG_DEPARTURE_CITY_ID = "departureCityId"
-        private const val ARG_ARRIVAL_CITY_ID = "arrivalCityId"
-
         @JvmStatic
-        fun newInstance(departureCityId: Long, arrivalCityId: Long): Fragment =
-            MapFragment().apply {
-                arguments = bundleOf(
-                    ARG_DEPARTURE_CITY_ID to departureCityId,
-                    ARG_ARRIVAL_CITY_ID to arrivalCityId
-                )
-            }
+        fun newInstance(): Fragment =
+            MapFragment()
     }
 }

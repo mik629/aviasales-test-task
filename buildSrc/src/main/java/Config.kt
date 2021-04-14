@@ -49,7 +49,6 @@ object Versions {
 
 object Plugins {
     const val kotlin = "gradle-plugin"
-    const val parcelize = "org.jetbrains.kotlin.plugin.parcelize"
     const val versions = "com.github.ben-manes.versions"
     const val androidTools = "com.android.tools.build:gradle:${Versions.androidToolsPlugin}"
     const val androidApp = "com.android.application"
