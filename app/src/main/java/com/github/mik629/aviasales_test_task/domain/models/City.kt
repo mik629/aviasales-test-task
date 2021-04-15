@@ -4,7 +4,8 @@ data class City(
     val id: Long,
     val fullName: String?,
     val location: Location,
-    val name: String
+    val name: String,
+    val abbreviation: String? = null
 ) {
     override fun toString(): String {
         return name
