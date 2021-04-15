@@ -2,6 +2,9 @@
     <string name="app_name">AviasalesTestTask</string>
     <string name="choose_destinations_greeting">Find your way</string>
     <string name="search_button_text">Search</string>
+    <string name="error_title_no_internet">Not connected</string>
+    <string name="error_desc_no_internet">Please, connect to the Internet and then</string>
+    <string name="retry">retry</string>
 
     <string name="map_api_key">AIzaSyA25X4egRvUBLCMoBS1HrNYTnfYktap1tM</string>
     <string name="departure_hint">From</string>

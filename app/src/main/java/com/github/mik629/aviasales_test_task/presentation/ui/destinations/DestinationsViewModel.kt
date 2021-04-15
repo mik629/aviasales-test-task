@@ -32,6 +32,9 @@ class DestinationsViewModel(
                 _destinations.value = ViewState.success(data = cities)
             }.onFailure { e ->
                 Timber.e(e)
+//                if (e is GaiException) {
+//
+//                }
                 _destinations.value = ViewState.error(error = e)
             }
         }
@@ -53,6 +56,10 @@ class DestinationsViewModel(
         viewModelScope.launch {
             destinationsRepository.storeArrivalCity(city = arrivalCity)
         }
+    }
+
+    fun refresh() {
+        router.replaceScreen(Screens.destinationsFragment())
     }
 
     class Factory @Inject constructor(

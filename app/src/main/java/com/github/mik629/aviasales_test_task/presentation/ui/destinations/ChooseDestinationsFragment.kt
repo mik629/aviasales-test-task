@@ -3,6 +3,11 @@ package com.github.mik629.aviasales_test_task.presentation.ui.destinations
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.core.content.ContextCompat
+import androidx.core.text.buildSpannedString
+import androidx.core.text.color
+import androidx.core.text.underline
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -35,7 +40,13 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
         }
         viewModel.destinations.observe(viewLifecycleOwner) { viewState ->
             when (viewState) {
+                is ViewState.Loading -> {
+                    showLoading(isLoading = true)
+                }
                 is ViewState.Success -> {
+                    showLoading(isLoading = false)
+                    binding.errorDesc.isVisible = false
+                    binding.homeTitle.text = getString(R.string.choose_destinations_greeting)
                     binding.departurePoint.setAdapter(
                         createAutoCompleteAdapter(cities = viewState.result)
                     )
@@ -43,8 +54,27 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
                         createAutoCompleteAdapter(cities = viewState.result)
                     )
                 }
+                is ViewState.Error -> {
+                    binding.progressbar.isVisible = false
+                    binding.errorDesc.isVisible = true
+                    binding.homeTitle.isVisible = true
+                    binding.homeTitle.text = getString(R.string.error_title_no_internet)
+                    binding.errorDesc.text = buildSpannedString {
+                        append(getString(R.string.error_desc_no_internet))
+                        append(" ")
+                        color(ContextCompat.getColor(requireContext(), R.color.pink)) {
+                            underline {
+                                append(getString(R.string.retry))
+                            }
+                        }
+                    }
+                    binding.errorDesc.setOnClickListener {
+                        viewModel.refresh()
+                    }
+                }
             }
         }
+        // todo make dropdown appear strictly below input field
         binding.departurePoint.setOnItemClickListener { parent, _, position, _ ->
             viewModel.saveDepartureChoice(parent.getItemAtPosition(position) as City)
         }
@@ -57,6 +87,14 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
                 true
             } else false
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressbar.isVisible = isLoading
+        binding.homeTitle.isVisible = !isLoading
+        binding.departureLayout.isVisible = !isLoading
+        binding.arrivalLayout.isVisible = !isLoading
+        binding.searchButton.isVisible = !isLoading
     }
 
     private fun createAutoCompleteAdapter(cities: List<City>) =
