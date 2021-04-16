@@ -12,10 +12,12 @@ import com.github.mik629.aviasales_test_task.R
 import com.github.mik629.aviasales_test_task.appComponent
 import com.github.mik629.aviasales_test_task.domain.models.City
 import com.github.mik629.aviasales_test_task.presentation.ui.ViewState
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
@@ -23,7 +25,7 @@ import com.google.maps.android.SphericalUtil
 import javax.inject.Inject
 
 
-class MapFragment : Fragment(R.layout.map_screen) {
+class MapFragment : SupportMapFragment() {
     @Inject
     lateinit var mapViewModelFactory: MapViewModel.Factory
 
@@ -38,9 +40,10 @@ class MapFragment : Fragment(R.layout.map_screen) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).getMapAsync { map ->
+        getMapAsync { map ->
             viewModel.destinations.observe(viewLifecycleOwner) { viewState ->
                 when (viewState) {
+                    // todo handle errors
                     is ViewState.Success -> with(viewState.result) {
                         addMarkers(
                             map = map,
@@ -56,12 +59,15 @@ class MapFragment : Fragment(R.layout.map_screen) {
     private fun addMarkers(map: GoogleMap, departureCity: City, arrivalCity: City) {
         val departurePoint = LatLng(departureCity.location.lat, departureCity.location.lon)
         val arrivalPoint = LatLng(arrivalCity.location.lat, arrivalCity.location.lon)
-        map.addMarker(buildMarker(city = departureCity))
-        map.addMarker(buildMarker(city = arrivalCity))
+        // todo centralize map in the middle of destinations (mb use liteMode)
+        // todo rotate jet icon into arrival direction
+        map.addMarker(buildMarker(city = departureCity)).showInfoWindow()
+        map.addMarker(buildMarker(city = arrivalCity)).showInfoWindow()
+
         map.addPolyline(
             PolylineOptions()
                 .add(departurePoint, arrivalPoint)
-                .width(8f)
+                .width(requireContext().resources.getDimension(R.dimen.jet_trajectory_width))
                 .color(ContextCompat.getColor(requireContext(), R.color.light_blue))
                 .geodesic(true)
         )
@@ -73,6 +79,16 @@ class MapFragment : Fragment(R.layout.map_screen) {
             ),
             finalPosition = arrivalPoint
         )
+
+        map.moveCamera(
+            CameraUpdateFactory.newLatLngBounds(
+                LatLngBounds.Builder()
+                    .include(departurePoint)
+                    .include(arrivalPoint)
+                    .build(),
+                80
+            )
+        )
     }
 
     private fun buildMarker(city: City): MarkerOptions =
@@ -82,7 +98,7 @@ class MapFragment : Fragment(R.layout.map_screen) {
                     city.location.lat,
                     city.location.lon
                 )
-            ).title(city.name)
+            ).title(city.abbreviation ?: city.name)
 
 
     private fun animateMarker(marker: Marker, finalPosition: LatLng) {
@@ -91,14 +107,20 @@ class MapFragment : Fragment(R.layout.map_screen) {
         }
         val property: Property<Marker, LatLng> = Property.of(
             Marker::class.java,
-            LatLng::class.java, "position"
+            LatLng::class.java,
+            MARKER_POSITION_PROPERTY
         )
         val animator = ObjectAnimator.ofObject(marker, property, typeEvaluator, finalPosition)
-        animator.duration = 3000
+        animator.duration = JET_ANIMATION_DURATION
+        animator.startDelay = JET_ANIMATION_START_DELAY
         animator.start()
     }
 
     companion object {
+        private const val JET_ANIMATION_DURATION: Long = 3000
+        private const val JET_ANIMATION_START_DELAY: Long = 100
+        private const val MARKER_POSITION_PROPERTY = "position"
+
         @JvmStatic
         fun newInstance(): Fragment =
             MapFragment()
