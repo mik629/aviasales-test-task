@@ -57,12 +57,13 @@ class MapFragment : SupportMapFragment() {
     }
 
     private fun addMarkers(map: GoogleMap, departureCity: City, arrivalCity: City) {
+        // todo mb show po-up about destinations being too far away and offer to rotate the device
         val departurePoint = LatLng(departureCity.location.lat, departureCity.location.lon)
         val arrivalPoint = LatLng(arrivalCity.location.lat, arrivalCity.location.lon)
         // todo centralize map in the middle of destinations (mb use liteMode)
         // todo rotate jet icon into arrival direction
-        map.addMarker(buildMarker(city = departureCity)).showInfoWindow()
-        map.addMarker(buildMarker(city = arrivalCity)).showInfoWindow()
+        map.addMarker(viewModel.buildMarker(city = departureCity)).showInfoWindow()
+        map.addMarker(viewModel.buildMarker(city = arrivalCity)).showInfoWindow()
 
         map.addPolyline(
             PolylineOptions()
@@ -86,20 +87,10 @@ class MapFragment : SupportMapFragment() {
                     .include(departurePoint)
                     .include(arrivalPoint)
                     .build(),
-                80
+                resources.getInteger(R.integer.map_marker_padding_to_border)
             )
         )
     }
-
-    private fun buildMarker(city: City): MarkerOptions =
-        MarkerOptions()
-            .position(
-                LatLng(
-                    city.location.lat,
-                    city.location.lon
-                )
-            ).title(city.abbreviation ?: city.name)
-
 
     private fun animateMarker(marker: Marker, finalPosition: LatLng) {
         val typeEvaluator = TypeEvaluator<LatLng> { fraction, startValue, endValue ->

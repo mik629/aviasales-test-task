@@ -64,7 +64,10 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
             city = viewModel.departureChoice,
             autocompleteTextView = binding.departurePoint
         )
-        setSavedChoice(city = viewModel.arrivalChoice, autocompleteTextView = binding.arrivalPoint)
+        setSavedChoice(
+            city = viewModel.arrivalChoice,
+            autocompleteTextView = binding.arrivalPoint
+        )
     }
 
     private fun setSavedChoice(city: City?, autocompleteTextView: MaterialAutoCompleteTextView) {
@@ -106,15 +109,15 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
     }
 
     private fun safeSearchClick() {
-        val isDepartureValid = setErrorOnInvalidCity(
+        val isDepartureInvalid = setErrorOnInvalidCity(
             autocompleteTextView = binding.departurePoint,
             city = viewModel.departureChoice
         )
-        val isArrivalValid = setErrorOnInvalidCity(
+        val isArrivalInvalid = setErrorOnInvalidCity(
             autocompleteTextView = binding.arrivalPoint,
             city = viewModel.arrivalChoice
         )
-        if (!isDepartureValid && !isArrivalValid) {
+        if (!isDepartureInvalid && !isArrivalInvalid) {
             viewModel.onSearchClick()
         }
     }
@@ -122,8 +125,8 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
     private fun setErrorOnInvalidCity(
         autocompleteTextView: MaterialAutoCompleteTextView,
         city: City?
-    ): Boolean {
-        return when {
+    ): Boolean =
+        when {
             autocompleteTextView.text?.toString().isNullOrBlank() -> {
                 autocompleteTextView.error = getString(R.string.error_departure_required)
                 true
@@ -134,7 +137,6 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
             }
             else -> false
         }
-    }
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressbar.isVisible = isLoading

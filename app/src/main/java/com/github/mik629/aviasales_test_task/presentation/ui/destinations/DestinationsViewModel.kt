@@ -18,6 +18,14 @@ class DestinationsViewModel(
     private val destinationsRepository: DestinationsRepository,
     private val router: Router
 ) : ViewModel() {
+
+    private var _arrivalChoice: City? = null
+    val arrivalChoice: City?
+        get() = _arrivalChoice
+    private var _departureChoice: City? = null
+    val departureChoice: City?
+        get() = _departureChoice
+
     private val _destinations: MutableLiveData<ViewState<List<City>, Throwable>> = MutableLiveData()
     val destinations: LiveData<ViewState<List<City>, Throwable>>
         get() =
@@ -36,13 +44,6 @@ class DestinationsViewModel(
             }
         }
     }
-
-    private var _arrivalChoice: City? = null
-    val arrivalChoice: City?
-        get() = _arrivalChoice
-    private var _departureChoice: City? = null
-    val departureChoice: City?
-        get() = _departureChoice
 
     fun onSearchClick() {
         router.navigateTo(

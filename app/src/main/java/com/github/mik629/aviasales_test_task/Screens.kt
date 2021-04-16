@@ -9,7 +9,5 @@ object Screens {
         FragmentScreen { ChooseDestinationsFragment.newInstance() }
 
     fun mapFragment(): FragmentScreen =
-        FragmentScreen {
-            MapFragment.newInstance()
-        }
+        FragmentScreen { MapFragment.newInstance() }
 }

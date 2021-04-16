@@ -27,10 +27,9 @@ class CityFilter(
 
     override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
         if (results != null && results.count > 0) {
-            val filteredList: ArrayList<City> = results.values as ArrayList<City>
             with(cityAdapter) {
                 clear()
-                addAll(filteredList)
+                addAll(results.values as List<City>)
                 notifyDataSetChanged()
             }
         }

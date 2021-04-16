@@ -9,6 +9,7 @@ import javax.inject.Inject
 class DestinationsRepositoryImpl @Inject constructor(
     private val serverApi: ServerApi
 ) : DestinationsRepository {
+
     private var departureCity: City? = null
     private var arrivalCity: City? = null
 
@@ -26,7 +27,6 @@ class DestinationsRepositoryImpl @Inject constructor(
 
     override suspend fun restoreDepartureCity(): City =
         requireNotNull(departureCity)
-
 
     override suspend fun storeArrivalCity(city: City) {
         arrivalCity = city

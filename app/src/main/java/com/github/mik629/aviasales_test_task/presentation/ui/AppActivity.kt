@@ -20,8 +20,8 @@ class AppActivity : AppCompatActivity() {
     private val navigator = AppNavigator(this, R.id.container)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
         super.onCreate(savedInstanceState)
+        appComponent.inject(this)
         setContentView(R.layout.app_activity)
 
         if (savedInstanceState == null) {

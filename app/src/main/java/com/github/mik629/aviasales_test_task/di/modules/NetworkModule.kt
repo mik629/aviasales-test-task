@@ -25,18 +25,16 @@ internal class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(
-        okHttpClient: OkHttpClient
-    ): Retrofit {
-        return Retrofit.Builder()
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
+        Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().build()))
             .build()
-    }
 
     @Provides
     @Singleton
-    fun provideApi(retrofit: Retrofit): ServerApi = retrofit.create(ServerApi::class.java)
+    fun provideApi(retrofit: Retrofit): ServerApi =
+        retrofit.create(ServerApi::class.java)
 
 }

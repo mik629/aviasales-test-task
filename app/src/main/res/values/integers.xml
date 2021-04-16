@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="map_marker_padding_to_border">80</integer>
+</resources>
