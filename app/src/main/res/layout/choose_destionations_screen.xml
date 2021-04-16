@@ -21,7 +21,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/departure_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        style="@style/ExposedDropdownLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -35,7 +35,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/arrival_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        style="@style/ExposedDropdownLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

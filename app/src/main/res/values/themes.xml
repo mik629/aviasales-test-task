@@ -17,7 +17,12 @@
     <style name="InputFieldLayout" parent="Widget.AppCompat.AutoCompleteTextView">
         <item name="backgroundTint">@color/white</item>
         <item name="hintTextColor">@color/light_grey</item>
+        <item name="errorTextColor">@color/red</item>
         <item name="android:completionThreshold">1</item>
+    </style>
+
+    <style name="ExposedDropdownLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="endIconMode">none</item>
     </style>
 
     <style name="InputField">

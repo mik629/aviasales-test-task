@@ -16,6 +16,7 @@ import com.github.mik629.aviasales_test_task.appComponent
 import com.github.mik629.aviasales_test_task.databinding.ChooseDestionationsScreenBinding
 import com.github.mik629.aviasales_test_task.domain.models.City
 import com.github.mik629.aviasales_test_task.presentation.ui.ViewState
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import javax.inject.Inject
 
 class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen) {
@@ -35,46 +36,7 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.searchButton.setOnClickListener {
-            viewModel.onSearchClick()
-        }
-        viewModel.destinations.observe(viewLifecycleOwner) { viewState ->
-            when (viewState) {
-                is ViewState.Loading -> {
-                    showLoading(isLoading = true)
-                }
-                is ViewState.Success -> {
-                    showLoading(isLoading = false)
-                    binding.errorDesc.isVisible = false
-                    binding.homeTitle.text = getString(R.string.choose_destinations_greeting)
-                    binding.departurePoint.setAdapter(
-                        createAutoCompleteAdapter(cities = viewState.result)
-                    )
-                    binding.arrivalPoint.setAdapter(
-                        createAutoCompleteAdapter(cities = viewState.result)
-                    )
-                }
-                is ViewState.Error -> {
-                    binding.progressbar.isVisible = false
-                    binding.errorDesc.isVisible = true
-                    binding.homeTitle.isVisible = true
-                    binding.homeTitle.text = getString(R.string.error_title_no_internet)
-                    binding.errorDesc.text = buildSpannedString {
-                        append(getString(R.string.error_desc_no_internet))
-                        append(" ")
-                        color(ContextCompat.getColor(requireContext(), R.color.pink)) {
-                            underline {
-                                append(getString(R.string.retry))
-                            }
-                        }
-                    }
-                    binding.errorDesc.setOnClickListener {
-                        viewModel.refresh()
-                    }
-                }
-            }
-        }
-        // todo make dropdown appear strictly below input field
+        binding.searchButton.setOnClickListener { safeSearchClick() }
         binding.departurePoint.setOnItemClickListener { parent, _, position, _ ->
             viewModel.saveDepartureChoice(parent.getItemAtPosition(position) as City)
         }
@@ -83,18 +45,108 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
         }
         binding.arrivalPoint.setOnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                viewModel.onSearchClick()
+                safeSearchClick()
                 true
             } else false
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.destinations.observe(viewLifecycleOwner) { viewState ->
+            when (viewState) {
+                is ViewState.Loading -> showLoading(isLoading = true)
+                is ViewState.Success -> showDestinationsLayout(viewState)
+                is ViewState.Error -> showErrorLayout()
+            }
+        }
+        setSavedChoice(
+            city = viewModel.departureChoice,
+            autocompleteTextView = binding.departurePoint
+        )
+        setSavedChoice(city = viewModel.arrivalChoice, autocompleteTextView = binding.arrivalPoint)
+    }
+
+    private fun setSavedChoice(city: City?, autocompleteTextView: MaterialAutoCompleteTextView) {
+        if (city != null) {
+            autocompleteTextView.setText(city.name)
+        }
+    }
+
+    private fun showDestinationsLayout(viewState: ViewState.Success<List<City>>) {
+        showLoading(isLoading = false)
+        binding.homeTitle.text = getString(R.string.choose_destinations_greeting)
+        binding.departurePoint.setAdapter(
+            createAutoCompleteAdapter(cities = viewState.result)
+        )
+        binding.arrivalPoint.setAdapter(
+            createAutoCompleteAdapter(cities = viewState.result)
+        )
+    }
+
+    private fun showErrorLayout() {
+        showDestinationsLayout(isVisible = false)
+        binding.progressbar.isVisible = false
+        binding.homeTitle.isVisible = true
+        binding.homeTitle.text = getString(R.string.error_general_title)
+        binding.errorDesc.text = buildSpannedString {
+            append(getString(R.string.error_general_desc))
+            append(" ")
+            color(ContextCompat.getColor(requireContext(), R.color.pink)) {
+                underline {
+                    append(getString(R.string.retry))
+                }
+            }
+            append(" ")
+            append(getString(R.string.error_talk_to_support))
+        }
+        binding.errorDesc.setOnClickListener {
+            viewModel.refresh()
+        }
+    }
+
+    private fun safeSearchClick() {
+        val isDepartureValid = setErrorOnInvalidCity(
+            autocompleteTextView = binding.departurePoint,
+            city = viewModel.departureChoice
+        )
+        val isArrivalValid = setErrorOnInvalidCity(
+            autocompleteTextView = binding.arrivalPoint,
+            city = viewModel.arrivalChoice
+        )
+        if (!isDepartureValid && !isArrivalValid) {
+            viewModel.onSearchClick()
+        }
+    }
+
+    private fun setErrorOnInvalidCity(
+        autocompleteTextView: MaterialAutoCompleteTextView,
+        city: City?
+    ): Boolean {
+        return when {
+            autocompleteTextView.text?.toString().isNullOrBlank() -> {
+                autocompleteTextView.error = getString(R.string.error_departure_required)
+                true
+            }
+            city == null -> {
+                autocompleteTextView.error = getString(R.string.error_unknown_city)
+                true
+            }
+            else -> false
+        }
+    }
+
     private fun showLoading(isLoading: Boolean) {
         binding.progressbar.isVisible = isLoading
-        binding.homeTitle.isVisible = !isLoading
-        binding.departureLayout.isVisible = !isLoading
-        binding.arrivalLayout.isVisible = !isLoading
-        binding.searchButton.isVisible = !isLoading
+        showDestinationsLayout(isVisible = !isLoading)
+    }
+
+    private fun showDestinationsLayout(isVisible: Boolean) {
+        binding.homeTitle.isVisible = isVisible
+        binding.departureLayout.isVisible = isVisible
+        binding.arrivalLayout.isVisible = isVisible
+        binding.searchButton.isVisible = isVisible
+        binding.errorDesc.isVisible = !isVisible
     }
 
     private fun createAutoCompleteAdapter(cities: List<City>) =

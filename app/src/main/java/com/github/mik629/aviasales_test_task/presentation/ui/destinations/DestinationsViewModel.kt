@@ -32,13 +32,17 @@ class DestinationsViewModel(
                 _destinations.value = ViewState.success(data = cities)
             }.onFailure { e ->
                 Timber.e(e)
-//                if (e is GaiException) {
-//
-//                }
                 _destinations.value = ViewState.error(error = e)
             }
         }
     }
+
+    private var _arrivalChoice: City? = null
+    val arrivalChoice: City?
+        get() = _arrivalChoice
+    private var _departureChoice: City? = null
+    val departureChoice: City?
+        get() = _departureChoice
 
     fun onSearchClick() {
         router.navigateTo(
@@ -47,12 +51,14 @@ class DestinationsViewModel(
     }
 
     fun saveDepartureChoice(departureCity: City) {
+        _departureChoice = departureCity
         viewModelScope.launch {
             destinationsRepository.storeDepartureCity(city = departureCity)
         }
     }
 
     fun saveArrivalChoice(arrivalCity: City) {
+        _arrivalChoice = arrivalCity
         viewModelScope.launch {
             destinationsRepository.storeArrivalCity(city = arrivalCity)
         }
