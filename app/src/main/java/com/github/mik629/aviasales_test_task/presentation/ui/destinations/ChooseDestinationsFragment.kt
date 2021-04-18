@@ -3,6 +3,7 @@ package com.github.mik629.aviasales_test_task.presentation.ui.destinations
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.AutoCompleteTextView
 import androidx.core.content.ContextCompat
 import androidx.core.text.buildSpannedString
 import androidx.core.text.color
@@ -17,7 +18,6 @@ import com.github.mik629.aviasales_test_task.databinding.ChooseDestionationsScre
 import com.github.mik629.aviasales_test_task.domain.models.City
 import com.github.mik629.aviasales_test_task.presentation.ui.ViewState
 import com.github.mik629.aviasales_test_task.presentation.ui.utils.hideKeyboard
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import javax.inject.Inject
 
 class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen) {
@@ -73,7 +73,7 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
         )
     }
 
-    private fun setSavedChoice(city: City?, autocompleteTextView: MaterialAutoCompleteTextView) {
+    private fun setSavedChoice(city: City?, autocompleteTextView: AutoCompleteTextView) {
         if (city != null) {
             autocompleteTextView.setText(city.name)
         }
@@ -126,7 +126,7 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
     }
 
     private fun setErrorOnInvalidCity(
-        autocompleteTextView: MaterialAutoCompleteTextView,
+        autocompleteTextView: AutoCompleteTextView,
         city: City?
     ): Boolean =
         when {

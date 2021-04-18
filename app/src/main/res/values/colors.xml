@@ -13,4 +13,5 @@
     <color name="light_grey">#eeeeee</color>
     <color name="red">#F44336</color>
     <color name="amber_transparent_90">#E6FFC107</color>
+    <color name="cyan">#80DEEA</color>
 </resources>
