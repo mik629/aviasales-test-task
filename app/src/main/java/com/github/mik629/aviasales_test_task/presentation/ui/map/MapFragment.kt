@@ -26,8 +26,8 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
-import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.maps.android.SphericalUtil
+import com.google.maps.android.SphericalUtil.computeHeading
 import javax.inject.Inject
 
 
@@ -77,7 +77,6 @@ class MapFragment : Fragment(R.layout.map_screen) {
     private fun addMarkers(map: GoogleMap, departureCity: City, arrivalCity: City) {
         val departurePoint = LatLng(departureCity.location.lat, departureCity.location.lon)
         val arrivalPoint = LatLng(arrivalCity.location.lat, arrivalCity.location.lon)
-        // todo centralize map in the middle of destinations (mb use liteMode)
         // todo rotate jet icon into arrival direction
         map.addMarker(viewModel.buildMarker(city = departureCity)).showInfoWindow()
         map.addMarker(viewModel.buildMarker(city = arrivalCity)).showInfoWindow()
@@ -125,13 +124,13 @@ class MapFragment : Fragment(R.layout.map_screen) {
                     MarkerOptions()
                         .position(departurePoint)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_plane))
+                        .rotation(computeHeading(departurePoint, arrivalPoint).toFloat())
                 ),
                 finalPosition = arrivalPoint
             )
         } else {
             binding.root.showSnackBar(
-                message = getString(R.string.error_destinations_far_away),
-                duration = BaseTransientBottomBar.LENGTH_INDEFINITE
+                message = getString(R.string.error_destinations_far_away)
             )
         }
     }
@@ -140,15 +139,16 @@ class MapFragment : Fragment(R.layout.map_screen) {
         val typeEvaluator = TypeEvaluator<LatLng> { fraction, startValue, endValue ->
             SphericalUtil.interpolate(startValue, endValue, fraction.toDouble())
         }
-        val property: Property<Marker, LatLng> = Property.of(
+        val positionProperty = Property.of(
             Marker::class.java,
             LatLng::class.java,
             MARKER_POSITION_PROPERTY
         )
-        val animator = ObjectAnimator.ofObject(marker, property, typeEvaluator, finalPosition)
-        animator.duration = JET_ANIMATION_DURATION
-        animator.startDelay = JET_ANIMATION_START_DELAY
-        animator.start()
+        ObjectAnimator.ofObject(marker, positionProperty, typeEvaluator, finalPosition)
+            .apply {
+                duration = JET_ANIMATION_DURATION
+                startDelay = JET_ANIMATION_START_DELAY
+            }.start()
     }
 
     companion object {
