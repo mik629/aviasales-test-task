@@ -1,6 +1,8 @@
 plugins {
     id(Plugins.androidApp)
     id(Plugins.kotlinAndroidApp)
+    id(Plugins.googleServicesPlugin)
+    id(Plugins.crashlyticsPlugin)
     kotlin(Plugins.kapt)
 }
 
@@ -58,6 +60,8 @@ dependencies {
     implementation(Libs.lifecycle)
     implementation(Libs.viewModel)
     implementation(Libs.fragmentKtx)
+    platform(Libs.firebase)
+    implementation(Libs.crashlytics)
 
     implementation(Libs.adapterDelegates)
     kapt(Libs.moshiCodeGen)

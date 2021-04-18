@@ -18,7 +18,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         appComponent.inject(this)
-        Timber.plant(Timber.DebugTree())
+        Timber.plant(CrashlyticsTree())
     }
 }
 

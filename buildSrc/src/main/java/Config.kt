@@ -16,6 +16,8 @@ object Versions {
     const val versionsPlugin = "0.28.0"
     const val androidToolsPlugin = "4.1.0"
     const val ktlintPlugin = "9.4.1"
+    const val googleServices = "4.3.5"
+    const val crashlyticsPlugin = "2.4.1"
 
     // Android libraries
     const val compatLibrary = "1.2.0"
@@ -24,6 +26,8 @@ object Versions {
     const val coroutines = "1.4.2"
     const val lifecycle = "2.2.0"
     const val fragmentKtx = "1.2.5"
+    const val firebase = "26.7.0"
+    const val crashlytics = "17.4.1"
 
     // third party libs
     const val adapterDelegates = "4.3.0"
@@ -51,6 +55,11 @@ object Plugins {
     const val kotlinAndroidApp = "kotlin-android"
     const val ktlint = "org.jlleitschuh.gradle.ktlint"
     const val kapt = "kapt"
+    const val googleServicesPlugin = "com.google.gms.google-services"
+    const val googleServicesClassPath = "com.google.gms:google-services:${Versions.googleServices}"
+    const val crashlyticsPlugin = "com.google.firebase.crashlytics"
+    const val crashlyticsPluginPath =
+        "com.google.firebase:firebase-crashlytics-gradle:${Versions.crashlyticsPlugin}"
 }
 
 object Libs {
@@ -62,6 +71,8 @@ object Libs {
     const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
     const val lifecycle = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
     const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragmentKtx}"
+    const val firebase = "com.google.firebase:firebase-bom:${Versions.firebase}"
+    const val crashlytics = "com.google.firebase:firebase-crashlytics:${Versions.crashlytics}"
 
     const val adapterDelegates = "com.hannesdorfmann:adapterdelegates4:${Versions.adapterDelegates}"
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
