@@ -6,4 +6,5 @@
     <dimen name="small_margin_8">8dp</dimen>
     <dimen name="corner_radius_8">8dp</dimen>
     <dimen name="jet_trajectory_width">4dp</dimen>
+    <dimen name="map_marker_padding_to_border">24dp</dimen>
 </resources>

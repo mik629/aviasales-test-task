@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="map_marker_padding_to_border">80</integer>
+    <integer name="map_max_lng_diff_to_fit">50</integer>
+    <integer name="map_max_lat_diff_to_fit">100</integer>
 </resources>

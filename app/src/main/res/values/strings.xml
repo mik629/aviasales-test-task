@@ -8,6 +8,8 @@
     <string name="error_departure_required">Please, select a departure point</string>
     <string name="error_arrival_required">Please, select an arrival point</string>
     <string name="error_unknown_city">Unknown city, please, choose from dropdown</string>
+    <string name="error_map_unexpected">Whoops, smth weird just happened, try to reload</string>
+    <string name="error_destinations_far_away">Your destinations are far, far away in a galaxy. Please, try rotating your device</string>
     <string name="retry">retry.</string>
 
     <string name="map_api_key">AIzaSyA25X4egRvUBLCMoBS1HrNYTnfYktap1tM</string>
