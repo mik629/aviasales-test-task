@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.SphericalUtil
 import com.google.maps.android.SphericalUtil.computeHeading
+import com.google.maps.android.ui.IconGenerator
 import javax.inject.Inject
 
 
@@ -77,9 +78,18 @@ class MapFragment : Fragment(R.layout.map_screen) {
     private fun addMarkers(map: GoogleMap, departureCity: City, arrivalCity: City) {
         val departurePoint = LatLng(departureCity.location.lat, departureCity.location.lon)
         val arrivalPoint = LatLng(arrivalCity.location.lat, arrivalCity.location.lon)
-        // todo rotate jet icon into arrival direction
-        map.addMarker(viewModel.buildMarker(city = departureCity)).showInfoWindow()
-        map.addMarker(viewModel.buildMarker(city = arrivalCity)).showInfoWindow()
+        val iconGenerator = IconGenerator(requireContext()).apply {
+            setTextAppearance(R.style.MarkerText)
+            setBackground(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.destination_marker_bgd
+                )
+            )
+        }
+
+        map.addMarker(viewModel.buildMarker(city = departureCity, iconGenerator = iconGenerator))
+        map.addMarker(viewModel.buildMarker(city = arrivalCity, iconGenerator = iconGenerator))
 
         map.addPolyline(
             PolylineOptions()

@@ -10,8 +10,10 @@ import com.github.mik629.aviasales_test_task.domain.models.City
 import com.github.mik629.aviasales_test_task.domain.models.Location
 import com.github.mik629.aviasales_test_task.domain.use_cases.LocationUseCase
 import com.github.mik629.aviasales_test_task.presentation.ui.ViewState
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.ui.IconGenerator
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -41,14 +43,19 @@ class MapViewModel(
         }
     }
 
-    fun buildMarker(city: City): MarkerOptions =
-        MarkerOptions()
+    fun buildMarker(city: City, iconGenerator: IconGenerator): MarkerOptions {
+        return MarkerOptions()
             .position(
                 LatLng(
                     city.location.lat,
                     city.location.lon
                 )
-            ).title(city.abbreviation ?: city.name)
+            ).icon(
+                BitmapDescriptorFactory.fromBitmap(
+                    iconGenerator.makeIcon(city.abbreviation ?: city.name)
+                )
+            )
+    }
 
     fun areLocationsWithinArea(
         pointA: Location,
