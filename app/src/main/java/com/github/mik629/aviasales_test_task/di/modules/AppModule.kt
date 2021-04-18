@@ -2,6 +2,7 @@ package com.github.mik629.aviasales_test_task.di.modules
 
 import android.app.Application
 import android.content.Context
+import com.github.mik629.aviasales_test_task.domain.use_cases.LocationUseCase
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
@@ -21,10 +22,15 @@ internal object AppModule {
     @Provides
     @Singleton
     fun provideNavigatorHolder(): NavigatorHolder =
-            cicerone.getNavigatorHolder()
+        cicerone.getNavigatorHolder()
 
     @Provides
     @Singleton
     fun provideAppContext(application: Application): Context =
         application.applicationContext
+
+    @Provides
+    @Singleton
+    fun provideLocationUseCase(): LocationUseCase =
+        LocationUseCase()
 }

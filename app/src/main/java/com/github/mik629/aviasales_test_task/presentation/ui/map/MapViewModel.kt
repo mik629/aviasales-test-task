@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.github.mik629.aviasales_test_task.domain.DestinationsRepository
 import com.github.mik629.aviasales_test_task.domain.models.City
+import com.github.mik629.aviasales_test_task.domain.models.Location
+import com.github.mik629.aviasales_test_task.domain.use_cases.LocationUseCase
 import com.github.mik629.aviasales_test_task.presentation.ui.ViewState
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -15,7 +17,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MapViewModel(
-    private val destinationsRepository: DestinationsRepository
+    private val destinationsRepository: DestinationsRepository,
+    private val locationUseCase: LocationUseCase
 ) : ViewModel() {
 
     private val _destinations: MutableLiveData<ViewState<Pair<City, City>, Throwable>> =
@@ -47,14 +50,29 @@ class MapViewModel(
                 )
             ).title(city.abbreviation ?: city.name)
 
+    fun areLocationsWithinArea(
+        pointA: Location,
+        pointB: Location,
+        latThreshold: Int,
+        lngThreshold: Int
+    ): Boolean =
+        locationUseCase.areLocationsWithinArea(
+            pointA = pointA,
+            pointB = pointB,
+            latThreshold = latThreshold,
+            lngThreshold = lngThreshold
+        )
+
     class Factory @Inject constructor(
-        private val destinationsRepository: DestinationsRepository
+        private val destinationsRepository: DestinationsRepository,
+        private val locationUseCase: LocationUseCase
     ) : ViewModelProvider.Factory {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             require(modelClass == MapViewModel::class.java)
             return MapViewModel(
-                destinationsRepository = destinationsRepository
+                destinationsRepository = destinationsRepository,
+                locationUseCase = locationUseCase
             ) as T
         }
     }
