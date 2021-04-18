@@ -135,6 +135,7 @@ class MapFragment : Fragment(R.layout.map_screen) {
                         .position(departurePoint)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_plane))
                         .rotation(computeHeading(departurePoint, arrivalPoint).toFloat())
+                        .zIndex(JET_Z_INDEX)
                 ),
                 finalPosition = arrivalPoint
             )
@@ -165,6 +166,7 @@ class MapFragment : Fragment(R.layout.map_screen) {
         private const val JET_ANIMATION_DURATION: Long = 3000
         private const val JET_ANIMATION_START_DELAY: Long = 100
         private const val MARKER_POSITION_PROPERTY = "position"
+        private const val JET_Z_INDEX = 1.0f
 
         @JvmStatic
         fun newInstance(): Fragment =
