@@ -16,6 +16,7 @@ import com.github.mik629.aviasales_test_task.appComponent
 import com.github.mik629.aviasales_test_task.databinding.ChooseDestionationsScreenBinding
 import com.github.mik629.aviasales_test_task.domain.models.City
 import com.github.mik629.aviasales_test_task.presentation.ui.ViewState
+import com.github.mik629.aviasales_test_task.presentation.ui.utils.hideKeyboard
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import javax.inject.Inject
 
@@ -39,9 +40,11 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
         binding.searchButton.setOnClickListener { safeSearchClick() }
         binding.departurePoint.setOnItemClickListener { parent, _, position, _ ->
             viewModel.saveDepartureChoice(parent.getItemAtPosition(position) as City)
+            binding.departurePoint.hideKeyboard(context = requireContext())
         }
         binding.arrivalPoint.setOnItemClickListener { parent, _, position, _ ->
             viewModel.saveArrivalChoice(parent.getItemAtPosition(position) as City)
+            binding.arrivalPoint.hideKeyboard(context = requireContext())
         }
         binding.arrivalPoint.setOnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
@@ -89,7 +92,7 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
 
     private fun showErrorLayout() {
         showDestinationsLayout(isVisible = false)
-        binding.progressbar.isVisible = false
+        binding.progress.progressbar.isVisible = false
         binding.homeTitle.isVisible = true
         binding.homeTitle.text = getString(R.string.error_general_title)
         binding.errorDesc.text = buildSpannedString {
@@ -139,7 +142,7 @@ class ChooseDestinationsFragment : Fragment(R.layout.choose_destionations_screen
         }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.progressbar.isVisible = isLoading
+        binding.progress.progressbar.isVisible = isLoading
         showDestinationsLayout(isVisible = !isLoading)
     }
 
