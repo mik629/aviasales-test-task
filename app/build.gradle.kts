@@ -8,6 +8,14 @@ android {
     buildToolsVersion = Config.androidBuildTools
     compileSdkVersion(Config.androidCompileSdk)
 
+    signingConfigs {
+        getByName("debug") {
+            keyAlias = "debug-key"
+            keyPassword = "bynthdm."
+            storeFile = file("debug-keystore.jks")
+            storePassword = "bynthdm."
+        }
+    }
     defaultConfig {
         applicationId = Config.applicationId
         minSdkVersion(Config.androidMinSdk)
@@ -23,14 +31,6 @@ android {
             signingConfig = signingConfigs["debug"]
             isDebuggable = true
             buildConfigField("String", "BASE_URL", """"https://yasen.hotellook.com/"""")
-        }
-
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
     }
     buildFeatures {
@@ -57,22 +57,14 @@ dependencies {
     implementation(Libs.coroutines)
     implementation(Libs.lifecycle)
     implementation(Libs.viewModel)
-//    implementation(Libs.room)
-//    implementation(Libs.roomKtx) // needed by coroutines
     implementation(Libs.fragmentKtx)
-//    kapt(Libs.roomCompiler)
 
     implementation(Libs.adapterDelegates)
-    implementation(Libs.glide)
-    kapt(Libs.glideCompiler)
-    kapt(Libs.moshiCodeGen) // migrate to kotlin serialization - better for multiplatform
-    implementation(Libs.glideOkhttp)
-    implementation(Libs.glideRecyclerView)
+    kapt(Libs.moshiCodeGen)
     implementation(Libs.retrofit)
     implementation(Libs.okhttp)
     implementation(Libs.okhttpLogging)
     implementation(Libs.timber)
-//    implementation(Libs.workManager)
     implementation(Libs.moshiAdapters)
     implementation(Libs.retrofitConverter)
     implementation(Libs.viewBindingProperty)

@@ -23,13 +23,10 @@ object Versions {
     const val constraintLayout = "2.0.4"
     const val coroutines = "1.4.2"
     const val lifecycle = "2.2.0"
-    const val workManager = "2.5.0-beta02"
-    const val room = "2.2.6"
     const val fragmentKtx = "1.2.5"
 
     // third party libs
     const val adapterDelegates = "4.3.0"
-    const val glide = "4.11.0"
     const val retrofit = "2.9.0"
     const val okhttp = "4.9.0"
     const val timber = "4.7.1"
@@ -44,7 +41,6 @@ object Versions {
     const val junit = "5.7.0"
     const val mockito = "3.7.0"
     const val mockitoKotlin = "2.2.0"
-    const val androidTestCore = "1.3.0"
 }
 
 object Plugins {
@@ -65,22 +61,13 @@ object Libs {
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
     const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
     const val lifecycle = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
-    const val room = "androidx.room:room-runtime:${Versions.room}"
-    const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
-    const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
     const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragmentKtx}"
 
     const val adapterDelegates = "com.hannesdorfmann:adapterdelegates4:${Versions.adapterDelegates}"
-    const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
-    const val glideCompiler = "com.github.bumptech.glide:compiler:${Versions.glide}"
-    const val glideOkhttp = "com.github.bumptech.glide:okhttp3-integration:${Versions.glide}"
-    const val glideRecyclerView =
-        "com.github.bumptech.glide:recyclerview-integration:${Versions.glide}"
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp}"
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
     const val okhttpLogging = "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp}"
-    const val workManager = "androidx.work:work-runtime-ktx:${Versions.workManager}"
     const val retrofitConverter = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
     const val moshiAdapters = "com.squareup.moshi:moshi-adapters:${Versions.moshi}"
     const val moshiCodeGen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}"
