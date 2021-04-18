@@ -27,7 +27,7 @@
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/departure_point"
-            style="@style/InputFieldLayout"
+            style="@style/InputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/departure_hint" />
@@ -41,7 +41,7 @@
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/arrival_point"
-            style="@style/InputFieldLayout"
+            style="@style/InputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/destination_hint" />
@@ -57,16 +57,9 @@
         android:text="@string/search_button_text"
         android:textColor="@color/primary" />
 
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/progressbar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/white"
-        android:visibility="gone"
-        tools:visibility="visible" />
+    <include
+        android:id="@+id/progress"
+        layout="@layout/progressbar" />
 
     <TextView
         android:id="@+id/error_desc"
