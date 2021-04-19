@@ -24,6 +24,7 @@
         <item name="android:completionThreshold">1</item>
         <item name="android:imeOptions">flagNoExtractUi</item>
         <item name="boxStrokeColor">@color/selector_white_box</item>
+        <item name="android:singleLine">true</item>
         <item name="background">@null</item>
     </style>
 
