@@ -8,6 +8,6 @@ interface ServerApi {
     @GET("autocomplete")
     suspend fun autocomplete(
         @Query("term") airportAbbreviation: String = "mow",
-        @Query("lang") languageCode: String = "ru"
+        @Query("lang") languageCode: String = "en"
     ): AutocompleteResponse
 }
